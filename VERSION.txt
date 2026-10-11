@@ -1,0 +1,3 @@
+CrossFit Broadcast Studio — Final Submission Build
+Responsive + retina-ready HTML/CSS/JavaScript
+GitHub Pages static demo + optional zero-dependency LAN sync server

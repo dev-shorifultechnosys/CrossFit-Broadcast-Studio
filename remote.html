@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#090b10" />
+  <title>CrossFit Remote</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="remote-page">
+  <main class="remote-shell">
+    <header class="remote-header">
+      <img src="assets/the-online-box-logo.png" alt="The Online Box" />
+      <div>
+        <span class="eyebrow">Mobile remote</span>
+        <h1>Workout Control</h1>
+      </div>
+      <span class="remote-status" id="remoteSyncStatus">Demo mode</span>
+    </header>
+
+    <section class="remote-timer-card">
+      <span id="remotePhase">READY</span>
+      <strong id="remoteTimer">00:00</strong>
+      <small id="remoteRound">ROUND 1 / 5</small>
+    </section>
+
+    <section class="remote-actions">
+      <button class="remote-main" id="remoteStart" type="button">START</button>
+      <button id="remotePause" type="button">PAUSE</button>
+      <button id="remoteNext" type="button">NEXT</button>
+      <button class="danger" id="remoteReset" type="button">RESET</button>
+    </section>
+
+    <section class="remote-meta">
+      <div><span>Mode</span><strong id="remoteMode">Work / Rest</strong></div>
+      <div><span>Time cap</span><strong id="remoteCap">20:00</strong></div>
+    </section>
+
+    <label class="wake-lock-row">
+      <input type="checkbox" id="wakeLockToggle" checked />
+      <span>
+        <strong>Keep screen awake</strong>
+        <small>Useful during live workouts on phone/tablet.</small>
+      </span>
+    </label>
+  </main>
+
+  <script src="js/state.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/remote.js"></script>
+</body>
+</html>

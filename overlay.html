@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>CrossFit Broadcast Overlay</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="overlay-page">
+  <main class="broadcast-canvas" id="broadcastCanvas">
+    <video id="cameraVideo" class="camera-layer" autoplay muted playsinline></video>
+    <div class="safe-guides" id="safeGuides" aria-hidden="true"></div>
+
+    <section class="zone zone-left fade-zone" id="zoneLeft">
+      <div class="zone-surface premium-surface">
+        <div class="brand-top">
+          <img id="overlayLogo" class="overlay-logo" alt="Event logo" />
+        </div>
+        <div class="brand-copy">
+          <span class="broadcast-kicker" id="overlaySubtitle"></span>
+          <h1 id="overlayBrandTitle"></h1>
+          <p id="overlayBrandText"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="zone zone-center fade-zone" id="zoneCenter">
+      <div class="timer-shell">
+        <div class="timer-ring" aria-hidden="true"><span id="timerProgressRing"></span></div>
+        <div class="timer-content">
+          <span class="timer-state" id="overlayTimerState">READY</span>
+          <div class="overlay-timer" id="overlayTimer">00:00</div>
+          <div class="round-status" id="overlayRound">ROUND 1 / 5</div>
+          <div class="time-cap" id="overlayTimeCap">TIME CAP 20:00</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="zone zone-right fade-zone" id="zoneRight">
+      <div class="zone-surface premium-surface">
+        <div class="right-head">
+          <div>
+            <span class="broadcast-kicker" id="workoutKicker">WORKOUT</span>
+            <h2 id="overlayWorkoutTitle">TODAY'S WOD</h2>
+          </div>
+          <time id="overlayClock">00:00:00</time>
+        </div>
+
+        <pre id="overlayWorkoutBody"></pre>
+
+        <div class="right-footer">
+          <span id="overlayCoach"></span>
+          <span id="overlayNotice"></span>
+        </div>
+      </div>
+    </section>
+
+    <div class="camera-pip-label" id="cameraLabel">CAMERA</div>
+  </main>
+
+  <script src="js/state.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/overlay.js"></script>
+</body>
+</html>

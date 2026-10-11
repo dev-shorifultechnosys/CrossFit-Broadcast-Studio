@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <title>CrossFit Broadcast Studio</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="app-shell">
+  <header class="topbar">
+    <div class="brand-lockup">
+      <img class="product-logo" src="assets/the-online-box-logo.png" alt="The Online Box" />
+      <div>
+        <strong>CrossFit Broadcast Studio</strong>
+        <span>Live workout overlay control</span>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <span class="autosave-pill" id="autosaveStatus">Autosaved</span>
+      <span class="status-pill" id="syncStatus">
+        <span class="status-dot"></span>
+        <span id="syncStatusText">Local mode</span>
+      </span>
+      <button class="btn btn-ghost" id="focusModeBtn" type="button">Focus Mode</button>
+      <button class="btn btn-ghost" id="openRemoteBtn" type="button">Open Remote</button>
+      <button class="btn btn-ghost" id="openOverlayBtn" type="button">Open Overlay</button>
+      <button class="btn btn-primary" id="fullscreenPreviewBtn" type="button">Preview Fullscreen</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="control-panel" aria-label="Streaming controls">
+      <nav class="section-tabs" aria-label="Control sections">
+        <button class="tab-btn active" data-tab="branding" type="button"><span>◆</span> Branding</button>
+        <button class="tab-btn" data-tab="timer" type="button"><span>◷</span> Timer</button>
+        <button class="tab-btn" data-tab="workout" type="button"><span>▤</span> Workout</button>
+        <button class="tab-btn" data-tab="layout" type="button"><span>▦</span> Layout</button>
+        <button class="tab-btn" data-tab="scenes" type="button"><span>□</span> Scenes</button>
+        <button class="tab-btn" data-tab="streaming" type="button"><span>◉</span> Streaming</button>
+      </nav>
+
+      <div class="panel-scroll">
+        <section class="panel-section active" data-panel="branding">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Left zone</span>
+              <h2>Branding</h2>
+            </div>
+            <label class="switch" title="Show/hide the whole branding zone">
+              <input type="checkbox" id="showBranding" checked />
+              <span></span>
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label class="field field-span-2">
+              <span>Broadcast logo</span>
+              <input type="file" id="logoInput" accept=".png,.jpg,.jpeg,.webp,.svg,image/*" />
+              <small>PNG, JPG, WebP or SVG. Recommended ≤ 2 MB.</small>
+            </label>
+
+            <div class="button-row field-span-2">
+              <button class="btn btn-soft" id="removeLogoBtn" type="button">Remove Logo</button>
+            </div>
+
+            <label class="check-row field-span-2">
+              <input type="checkbox" id="showLogo" checked />
+              <span>Show uploaded logo</span>
+            </label>
+
+            <label class="field field-span-2">
+              <span>Brand / event title</span>
+              <input type="text" id="brandTitle" value="CROSSFIT OPEN 26.1" />
+            </label>
+
+            <label class="check-row field-span-2">
+              <input type="checkbox" id="showBrandTitle" checked />
+              <span>Show brand / event title</span>
+            </label>
+
+            <label class="field field-span-2">
+              <span>Subtitle</span>
+              <input type="text" id="brandSubtitle" value="LIVE WORKOUT" />
+            </label>
+
+            <label class="check-row field-span-2">
+              <input type="checkbox" id="showBrandSubtitle" checked />
+              <span>Show subtitle</span>
+            </label>
+
+            <label class="field field-span-2">
+              <span>Free text</span>
+              <textarea id="brandFreeText" rows="3">RX DIVISION</textarea>
+            </label>
+
+            <label class="check-row field-span-2">
+              <input type="checkbox" id="showBrandText" checked />
+              <span>Show free text</span>
+            </label>
+
+            <label class="field field-span-2">
+              <span>Font family</span>
+              <select id="brandFontFamily">
+                <option value="system">System Sans</option>
+                <option value="arial">Arial</option>
+                <option value="helvetica">Helvetica</option>
+                <option value="georgia">Georgia</option>
+                <option value="impact">Impact / Condensed</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Title size</span>
+              <input type="range" id="brandFontSize" min="20" max="72" value="38" />
+            </label>
+
+            <label class="field">
+              <span>Alignment</span>
+              <select id="brandAlign">
+                <option value="left">Left</option>
+                <option value="center">Center</option>
+                <option value="right">Right</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Accent color</span>
+              <input type="color" id="accentColor" value="#ff3b30" />
+            </label>
+
+            <label class="field">
+              <span>Text color</span>
+              <input type="color" id="textColor" value="#ffffff" />
+            </label>
+          </div>
+        </section>
+
+        <section class="panel-section" data-panel="timer">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Center zone</span>
+              <h2>Timer</h2>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="showTimer" checked />
+              <span></span>
+            </label>
+          </div>
+
+          <div class="timer-control-card">
+            <div class="timer-readout">
+              <span id="controlTimerMode">READY</span>
+              <strong id="controlTimerDisplay">00:00</strong>
+              <small id="controlRoundDisplay">ROUND 1 / 5</small>
+            </div>
+            <div class="timer-actions">
+              <button class="btn btn-primary" id="startTimerBtn" type="button">Start</button>
+              <button class="btn btn-soft" id="pauseTimerBtn" type="button">Pause</button>
+              <button class="btn btn-soft" id="nextIntervalBtn" type="button">Next</button>
+              <button class="btn btn-danger" id="resetTimerBtn" type="button">Reset</button>
+            </div>
+          </div>
+
+          <div class="preset-strip" aria-label="CrossFit timer presets">
+            <button type="button" data-timer-preset="for-time">FOR TIME</button>
+            <button type="button" data-timer-preset="amrap">AMRAP</button>
+            <button type="button" data-timer-preset="emom">EMOM</button>
+            <button type="button" data-timer-preset="tabata">TABATA</button>
+            <button type="button" data-timer-preset="interval">INTERVAL</button>
+            <button type="button" data-timer-preset="custom">CUSTOM</button>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Timer mode</span>
+              <select id="timerMode">
+                <option value="interval">Work / Rest</option>
+                <option value="countdown">Countdown</option>
+                <option value="stopwatch">Stopwatch</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Lead-in seconds</span>
+              <input type="number" id="leadIn" min="0" max="60" value="5" />
+            </label>
+
+            <label class="field">
+              <span>Time cap (min)</span>
+              <input type="number" id="timeCap" min="1" max="180" value="20" />
+            </label>
+
+            <label class="field">
+              <span>Rounds</span>
+              <input type="number" id="rounds" min="1" max="100" value="5" />
+            </label>
+
+            <label class="field">
+              <span>Work (sec)</span>
+              <input type="number" id="workSeconds" min="1" max="7200" value="60" />
+            </label>
+
+            <label class="field">
+              <span>Rest (sec)</span>
+              <input type="number" id="restSeconds" min="0" max="7200" value="30" />
+            </label>
+
+            <label class="field field-span-2">
+              <span>Custom sequence</span>
+              <input type="text" id="customSequence" placeholder="e.g. 2m + 30 + 1:00 or 4*(1m+30)" />
+              <small id="sequenceStatus">Use seconds, m, mm:ss, * repetition and parentheses.</small>
+            </label>
+
+            <label class="field">
+              <span>Timer size</span>
+              <input type="range" id="timerSize" min="72" max="220" value="132" />
+            </label>
+
+            <label class="field">
+              <span>Base timer color</span>
+              <input type="color" id="timerColor" value="#ffffff" />
+            </label>
+
+            <label class="field">
+              <span>Traffic color basis</span>
+              <select id="trafficBasis">
+                <option value="overall">Overall time cap</option>
+                <option value="interval">Current interval</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Sound volume</span>
+              <input type="range" id="soundVolume" min="0" max="100" value="65" />
+            </label>
+
+            <label class="check-row field-span-2">
+              <input type="checkbox" id="enableTrafficColors" checked />
+              <span>Enable green → yellow → red colors</span>
+            </label>
+
+            <label class="check-row">
+              <input type="checkbox" id="enableSound" checked />
+              <span>Enable sound signals</span>
+            </label>
+
+            <div class="sound-options field-span-2">
+              <label><input type="checkbox" id="soundCountdown" checked /> Countdown 3–2–1</label>
+              <label><input type="checkbox" id="soundWork" checked /> Work / start cue</label>
+              <label><input type="checkbox" id="soundRest" checked /> Rest cue</label>
+              <label><input type="checkbox" id="soundFinish" checked /> Finish cue</label>
+              <button class="btn btn-soft" id="testSoundBtn" type="button">Test Sound</button>
+            </div>
+
+            <label class="check-row">
+              <input type="checkbox" id="showTimerState" checked />
+              <span>Show timer state</span>
+            </label>
+
+            <label class="check-row">
+              <input type="checkbox" id="showRound" checked />
+              <span>Show round / interval</span>
+            </label>
+
+            <label class="check-row">
+              <input type="checkbox" id="showTimeCap" checked />
+              <span>Show time cap</span>
+            </label>
+          </div>
+        </section>
+
+        <section class="panel-section" data-panel="workout">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Right zone</span>
+              <h2>Workout info</h2>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="showWorkout" checked />
+              <span></span>
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label class="field field-span-2">
+              <span>Workout title</span>
+              <input type="text" id="workoutTitle" value="TODAY'S WOD" />
+            </label>
+
+            <label class="check-row field-span-2">
+              <input type="checkbox" id="showWorkoutTitle" checked />
+              <span>Show workout title</span>
+            </label>
+
+            <label class="field field-span-2">
+              <span>Workout details</span>
+              <textarea id="workoutBody" rows="7">5 ROUNDS
+10 Burpees
+15 Wall Balls
+20 Double Unders</textarea>
+            </label>
+
+            <label class="check-row field-span-2">
+              <input type="checkbox" id="showWorkoutBody" checked />
+              <span>Show workout details</span>
+            </label>
+
+            <label class="field field-span-2">
+              <span>Workout font family</span>
+              <select id="workoutFontFamily">
+                <option value="system">System Sans</option>
+                <option value="arial">Arial</option>
+                <option value="helvetica">Helvetica</option>
+                <option value="georgia">Georgia</option>
+                <option value="impact">Impact / Condensed</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Title size</span>
+              <input type="range" id="workoutTitleSize" min="20" max="64" value="36" />
+            </label>
+
+            <label class="field">
+              <span>Body size</span>
+              <input type="range" id="workoutBodySize" min="12" max="42" value="24" />
+            </label>
+
+            <label class="field">
+              <span>Line spacing</span>
+              <input type="range" id="workoutLineHeight" min="110" max="210" value="150" />
+            </label>
+
+            <label class="field">
+              <span>Alignment</span>
+              <select id="workoutAlign">
+                <option value="left">Left</option>
+                <option value="center">Center</option>
+                <option value="right">Right</option>
+              </select>
+            </label>
+
+            <label class="field field-span-2">
+              <span>Coach / trainer</span>
+              <input type="text" id="coachName" value="COACH MICHAEL" />
+            </label>
+
+            <label class="field field-span-2">
+              <span>Notice</span>
+              <input type="text" id="noticeText" value="STAY STRONG • MOVE WELL" />
+            </label>
+
+            <label class="check-row">
+              <input type="checkbox" id="showCoach" checked />
+              <span>Show coach</span>
+            </label>
+
+            <label class="check-row">
+              <input type="checkbox" id="showNotice" checked />
+              <span>Show notice</span>
+            </label>
+
+            <label class="check-row field-span-2">
+              <input type="checkbox" id="showClock" checked />
+              <span>Show live clock</span>
+            </label>
+          </div>
+        </section>
+
+        <section class="panel-section" data-panel="layout">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Broadcast layout</span>
+              <h2>Layout & camera</h2>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              <span>Left zone width</span>
+              <input type="range" id="leftWidth" min="19" max="36" value="25" />
+            </label>
+
+            <label class="field">
+              <span>Right zone width</span>
+              <input type="range" id="rightWidth" min="19" max="36" value="25" />
+            </label>
+
+            <label class="field">
+              <span>Overlay opacity</span>
+              <input type="range" id="panelOpacity" min="0" max="100" value="84" />
+            </label>
+
+            <label class="field">
+              <span>Corner radius</span>
+              <input type="range" id="cornerRadius" min="0" max="36" value="24" />
+            </label>
+
+            <label class="check-row field-span-2">
+              <input type="checkbox" id="showSafeGuides" />
+              <span>Show 16:9 safe-area guides in preview only</span>
+            </label>
+
+            <div class="camera-status field-span-2">
+              <span class="camera-dot" id="cameraStatusDot"></span>
+              <div>
+                <strong id="cameraStatusTitle">Camera disabled</strong>
+                <small id="cameraStatusText">Enable the browser camera only when you want it.</small>
+              </div>
+            </div>
+
+            <div class="camera-preview-card field-span-2">
+              <div class="camera-preview-head">
+                <div>
+                  <span class="eyebrow">Live camera check</span>
+                  <strong>Camera Preview</strong>
+                </div>
+                <button class="btn btn-soft" id="testCameraBtn" type="button">Test Camera</button>
+              </div>
+              <div class="camera-preview-frame">
+                <video id="controlCameraPreview" autoplay muted playsinline></video>
+                <div class="camera-preview-placeholder" id="cameraPreviewPlaceholder">Camera preview is off</div>
+              </div>
+            </div>
+
+            <label class="field field-span-2">
+              <span>Camera workflow</span>
+              <select id="cameraWorkflow">
+                <option value="obs">OBS native camera — recommended</option>
+                <option value="browser">Browser camera</option>
+              </select>
+              <small>OBS native camera is best for production. Browser camera remains available for direct browser use/testing.</small>
+            </label>
+
+            <label class="check-row field-span-2">
+              <input type="checkbox" id="cameraEnabled" />
+              <span>Enable browser camera layer</span>
+            </label>
+
+            <label class="field field-span-2">
+              <span>Camera device</span>
+              <select id="cameraDevice">
+                <option value="">Default camera</option>
+              </select>
+              <small>Permission is requested only when camera is enabled.</small>
+            </label>
+
+            <label class="field">
+              <span>Camera placement</span>
+              <select id="cameraPlacement">
+                <option value="background">Full background</option>
+                <option value="right">Right picture-in-picture</option>
+                <option value="left">Left picture-in-picture</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Camera fit</span>
+              <select id="cameraFit">
+                <option value="cover">Cover</option>
+                <option value="contain">Contain</option>
+              </select>
+            </label>
+
+            <label class="check-row field-span-2">
+              <input type="checkbox" id="cameraMirror" checked />
+              <span>Mirror camera preview</span>
+            </label>
+
+            <button class="btn btn-soft field-span-2" id="resetLayoutBtn" type="button">Restore Default Layout</button>
+          </div>
+        </section>
+
+        <section class="panel-section" data-panel="scenes">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Local presets</span>
+              <h2>Scenes</h2>
+            </div>
+          </div>
+
+          <div class="scene-save-row">
+            <input type="text" id="sceneName" placeholder="Scene name, e.g. Competition" />
+            <button class="btn btn-primary" id="saveSceneBtn" type="button">Save</button>
+          </div>
+
+          <div class="starter-presets">
+            <button type="button" data-preset="daily">Daily WOD</button>
+            <button type="button" data-preset="competition">Competition</button>
+            <button type="button" data-preset="minimal">Minimal Timer</button>
+            <button type="button" data-preset="coach">Coach Focus</button>
+          </div>
+
+          <div id="sceneList" class="scene-list"></div>
+          <p class="muted-copy">Scene presets save configuration only — not a running/paused timer position.</p>
+        </section>
+
+        <section class="panel-section" data-panel="streaming">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">OBS / Zoom</span>
+              <h2>Streaming setup</h2>
+            </div>
+          </div>
+
+          <div class="integration-grid">
+            <div class="integration-card"><span>OBS</span><strong>Ready</strong><small>Browser Source</small></div>
+            <div class="integration-card"><span>Zoom</span><strong>Ready</strong><small>OBS Virtual Camera</small></div>
+            <div class="integration-card"><span>Remote</span><strong id="remoteCardStatus">Local</strong><small id="remoteCardText">Start local server for LAN sync</small></div>
+            <div class="integration-card"><span>Camera</span><strong id="cameraCardStatus">Off</strong><small id="cameraCardText">Browser camera optional</small></div>
+          </div>
+
+          <div class="health-strip">
+            <div><span class="health-dot" id="healthSyncDot"></span><strong>Realtime Sync</strong><small id="healthSyncText">Local only</small></div>
+            <div><span class="health-dot" id="healthCameraDot"></span><strong>Camera</strong><small id="healthCameraText">Off</small></div>
+            <div><span class="health-dot ready"></span><strong>OBS Overlay</strong><small>1920×1080 ready</small></div>
+            <div><span class="health-dot ready"></span><strong>Zoom</strong><small>Via OBS Virtual Camera</small></div>
+          </div>
+
+          <div class="info-card">
+            <h3>Recommended production workflow</h3>
+            <ol>
+              <li>Run <code>node server.js</code>.</li>
+              <li>Open the control panel on the laptop.</li>
+              <li>Use <code>/overlay.html</code> as a 1920×1080 OBS Browser Source.</li>
+              <li>Use OBS Video Capture Device for the camera, or the included browser camera when needed.</li>
+              <li>Start OBS Virtual Camera and select it in Zoom.</li>
+            </ol>
+          </div>
+
+          <div class="info-card">
+            <h3>Phone / tablet remote</h3>
+            <p>On the same network open <strong>http://YOUR-PC-IP:8080/remote.html</strong>. The local server synchronizes control, remote and OBS in real time without a paid cloud service.</p>
+          </div>
+
+          <div class="info-card">
+            <h3>Portable configuration</h3>
+            <p>Export all branding, timer, workout and layout settings to JSON and import them on another machine/server.</p>
+            <div class="config-actions">
+              <button class="btn btn-soft" id="exportConfigBtn" type="button">Export Configuration</button>
+              <label class="btn btn-soft import-btn">Import Configuration
+                <input id="importConfigInput" type="file" accept=".json,application/json" hidden />
+              </label>
+            </div>
+          </div>
+
+          <div class="info-card extensions-card">
+            <h3>Future-ready extension points</h3>
+            <div class="extension-grid">
+              <div><span>Participants</span><strong>Ready to extend</strong></div>
+              <div><span>Sponsor rotation</span><strong>Ready to extend</strong></div>
+              <div><span>Chat / info feed</span><strong>Ready to extend</strong></div>
+              <div><span>Cloud accounts</span><strong>Optional later</strong></div>
+            </div>
+          </div>
+
+          <div class="shortcut-grid">
+            <div><kbd>Space</kbd><span>Start / pause</span></div>
+            <div><kbd>R</kbd><span>Reset timer</span></div>
+            <div><kbd>N</kbd><span>Next interval</span></div>
+            <div><kbd>F</kbd><span>Fullscreen preview</span></div>
+          </div>
+        </section>
+      </div>
+    </aside>
+
+    <section class="preview-area">
+      <div class="preview-heading">
+        <div>
+          <span class="eyebrow">Live 16:9 preview</span>
+          <h1>Broadcast Output</h1>
+        </div>
+        <div class="preview-badges">
+          <span>FULL HD</span><span>TRANSPARENT</span><span>OBS READY</span>
+          <button class="icon-btn" id="refreshPreviewBtn" type="button" title="Refresh preview">↻</button>
+        </div>
+      </div>
+
+      <div class="preview-frame">
+        <iframe id="previewFrame" src="overlay.html?preview=1" title="Overlay preview" allow="camera"></iframe>
+      </div>
+
+      <div class="ops-summary">
+        <div><span>SESSION</span><strong id="summarySession">Ready</strong><small id="summarySessionDetail">No active timer</small></div>
+        <div><span>MODE</span><strong id="summaryMode">Interval</strong><small id="summaryModeDetail">5 rounds</small></div>
+        <div><span>CAMERA</span><strong id="summaryCamera">OBS</strong><small id="summaryCameraDetail">Recommended workflow</small></div>
+        <div><span>REMOTE</span><strong id="summaryRemote">Local</strong><small id="summaryRemoteDetail">Start server for LAN sync</small></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/state.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/control.js"></script>
+</body>
+</html>
